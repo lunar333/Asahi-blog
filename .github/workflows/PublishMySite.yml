@@ -26,9 +26,8 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "your-email@example.com"
-          git config --global user.name "Your Name"
-          git config --global credential.helper store
+          git config --global user.email "1434544232.com"
+          git config --global user.name "lunar333"
 
       - name: Add CNAME to gh-pages
         env:
@@ -40,4 +39,5 @@ jobs:
           echo "www.example.com" > CNAME  # 手动创建 CNAME 文件
           git add CNAME
           git commit -m "Add CNAME file"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/lunar333/Asahi-blog.git
           git push origin gh-pages
