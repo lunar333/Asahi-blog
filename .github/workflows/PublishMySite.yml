@@ -20,4 +20,10 @@ jobs:
       - run: |
           mkdocs build # 构建站点
           cp CNAME site/ # 将根目录下的 CNAME 文件复制到 site/ 目录
-      - run: mkdocs gh-deploy --force # 使用mkdocs-material部署到gh-pages分支
+      - run: |
+          mkdocs gh-deploy --force # 使用 mkdocs-material 部署到 gh-pages 分支
+          git checkout gh-pages # 切换到 gh-pages 分支
+          cp CNAME . # 将 CNAME 文件从根目录复制到 gh-pages 分支的根目录
+          git add CNAME
+          git commit --amend --no-edit # 修改最后的提交，添加 CNAME 文件
+          git push --force # 强制推送修改
