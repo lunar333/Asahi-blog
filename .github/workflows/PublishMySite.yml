@@ -11,9 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
@@ -21,20 +19,20 @@ jobs:
         run: pip install mkdocs-material
 
       - name: Build site
-        run: |
-          mkdocs build
-          cp CNAME site/  # 复制 CNAME 文件到 site/ 目录中
+        run: mkdocs build
+
+      - name: Copy CNAME
+        run: cp CNAME site/
 
       - name: Deploy to GitHub Pages
+        run: mkdocs gh-deploy --force
+
+      - name: Verify CNAME
         run: |
-          mkdocs gh-deploy --force  # 部署到 gh-pages 分支
-          
-      - name: Manually add CNAME to gh-pages
-        run: |
-          git clone https://github.com/lunar333/Asahi-blog.git out
-          cd out
+          git fetch origin gh-pages
           git checkout gh-pages
-          cp ../CNAME .  # 将根目录的 CNAME 复制到 gh-pages 分支
-          git add CNAME
-          git commit -m "Add CNAME"
-          git push origin gh-pages --force
+          if [ -f CNAME ]; then
+            echo "CNAME exists and was deployed successfully"
+          else
+            echo "CNAME does not exist" && exit 1
+          fi
