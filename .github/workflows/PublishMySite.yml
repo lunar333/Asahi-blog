@@ -36,7 +36,7 @@ jobs:
           git clone https://github.com/lunar333/Asahi-blog.git out
           cd out
           git checkout gh-pages
-          echo "www.example.com" > CNAME  # 手动创建 CNAME 文件
+          echo "www.1434544232.online" > CNAME  # 手动创建 CNAME 文件
           git add CNAME
           git commit -m "Add CNAME file"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/lunar333/Asahi-blog.git
