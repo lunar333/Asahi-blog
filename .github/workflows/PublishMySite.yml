@@ -21,18 +21,15 @@ jobs:
       - name: Build site
         run: mkdocs build
 
-      - name: Copy CNAME
-        run: cp CNAME site/
-
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force
 
-      - name: Verify CNAME
+      - name: Add CNAME to gh-pages
         run: |
-          git fetch origin gh-pages
+          git clone https://github.com/lunar333/Asahi-blog.git out
+          cd out
           git checkout gh-pages
-          if [ -f CNAME ]; then
-            echo "CNAME exists and was deployed successfully"
-          else
-            echo "CNAME does not exist" && exit 1
-          fi
+          echo "www.1434544232.online" > CNAME  # 手动创建 CNAME 文件
+          git add CNAME
+          git commit -m "Add CNAME file"
+          git push origin gh-pages
