@@ -10,20 +10,13 @@ on:
 
 jobs: 
   deploy:
-    runs-on: ubuntu-latest # 创建一个新的云端虚拟机 使用最新Ubuntu系统
+    runs-on: ubuntu-latest # 使用最新的 Ubuntu 版本
     steps:
-      - uses: actions/checkout@v3 # 升级到 v3 版本
-      - uses: actions/setup-python@v4 # 升级到 v4 版本
+      - uses: actions/checkout@v3 # 使用 v3 版本
+      - uses: actions/setup-python@v4 # 使用 v4 版本
         with:
-          python-version: 3.x
-      - run: pip install mkdocs-material # 使用pip包管理工具安装mkdocs-material
-      - run: |
-          mkdocs build # 构建站点
-          cp CNAME site/ # 将根目录下的 CNAME 文件复制到 site/ 目录
-      - run: |
-          mkdocs gh-deploy --force # 使用 mkdocs-material 部署到 gh-pages 分支
-          git checkout gh-pages # 切换到 gh-pages 分支
-          cp ../CNAME . # 将 CNAME 文件从主目录复制到 gh-pages 分支的根目录
-          git add CNAME
-          git commit --amend --no-edit # 修改最后的提交，添加 CNAME 文件
-          git push --force # 强制推送修改
+          python-version: '3.x' # 安装 Python 3.x 版本
+      - run: pip install mkdocs-material # 安装 MkDocs 和 Material 主题
+      - run: mkdocs build # 构建站点
+      - run: cp CNAME site/ # 将 CNAME 文件复制到 site 目录中
+      - run: mkdocs gh-deploy --force # 部署到 gh-pages 分支
