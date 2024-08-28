@@ -1,28 +1,40 @@
-name: publish site
+name: Publish MkDocs site
 
-on: 
-  push: 
-    branches:
-      - main
-  pull_request: 
+on:
+  push:
     branches:
       - main
 
-jobs: 
+jobs:
   deploy:
-    runs-on: ubuntu-latest # 使用最新的 Ubuntu 版本
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3 # 使用 v3 版本
-      - uses: actions/setup-python@v4 # 使用 v4 版本
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.x' # 安装 Python 3.x 版本
-      - run: pip install mkdocs-material # 安装 MkDocs 和 Material 主题
-      - run: |
-          mkdocs build # 构建站点
-          cp CNAME site/ # 将 CNAME 文件复制到 site 目录中
-          mkdocs gh-deploy --force # 部署到 gh-pages 分支
-          git checkout gh-pages # 切换到 gh-pages 分支
-          cp ../CNAME . # 将 CNAME 文件从主目录复制到 gh-pages 分支的根目录
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install mkdocs-material
+
+      - name: Build site
+        run: |
+          mkdocs build
+          cp CNAME site/  # 复制 CNAME 文件到 site/ 目录中
+
+      - name: Deploy to GitHub Pages
+        run: |
+          mkdocs gh-deploy --force  # 部署到 gh-pages 分支
+          
+      - name: Manually add CNAME to gh-pages
+        run: |
+          git clone https://github.com/lunar333/Asahi-blog.git out
+          cd out
+          git checkout gh-pages
+          cp ../CNAME .  # 将根目录的 CNAME 复制到 gh-pages 分支
           git add CNAME
-          git commit --no-edit --amend # 修改最后一次提交以包含 CNAME 文件
-          git push origin gh-pages --force # 强制推送到远程 gh-pages 分支
+          git commit -m "Add CNAME"
+          git push origin gh-pages --force
