@@ -4,6 +4,7 @@ theme:
   name: material
   features:
     - content.tabs
+    - navigation.footer
 
 nav:
   - 二分搜索: 二分搜索.md
